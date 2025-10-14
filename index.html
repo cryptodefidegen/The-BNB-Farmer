@@ -1,0 +1,429 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+  <head>
+
+    <title>BNB Yield Farmer</title>
+    <meta charset="utf-8" Set-Cookie: widget_session=abc123; SameSite=None; Secure />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
+    <!--- Launch Timer 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Share+Tech+Mono'>
+    <link rel="stylesheet" href="assets/css/style.css"> --->
+
+    <!-- Favicons -->
+    <link href="assets/img/cropslogo.png" rel="icon" type="image/png">
+    <link href="assets/img/cropslogo.png" rel="apple-touch-icon">
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://bnb.cropsyieldfarmer.online/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="BNB Yield Farmer" />
+    <meta property="og:description" content="The Latest dApp PremCrypto Team" />
+    <meta property="og:image" content="https://bnb.cropsfarmer.online/assets/img/cropslogo.PNG" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="@BUSDCropFarmer" />
+    <meta property="twitter:url" content="https://twitter.com/BUSDCropFarmer" />
+    <meta name="twitter:title" content="BNB Yield Farmer" />
+    <meta name="twitter:description" content="The Latest dApp From PremCrypto Team" />
+    <meta name="twitter:image" content="https://bnb.cropsfarmer.online/assets/img/cropslogo.PNG" />
+
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.dropotron.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/interface_20220701_0800.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/web3.min.js"></script>
+    <script src="assets/js/main_eth_20220701_0800.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CRaleway:300,300i,400,400i,500,500i,600,600i,700,700i%7CPoppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet">
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/3.0.0-rc.5/web3.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+  </head>
+
+  <style>
+    body {
+      background-image: url('assets/img/bnbbg.PNG');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+    }
+  </style>
+
+  <body>
+
+    <!-- Launch section for launch -->
+    <!-- <div id="clock" style="z-index: 999;padding-top: 70px;">
+      <p class="date">{{ date }}</p>
+      <p class="time">{{ time }}</p>
+      <p class="text">DIGITAL CLOCK with Vue.js</p>
+    </div> -->
+    <!-- <header id="header" class="fixed-top ">
+      <div class="container d-flex align-items-center justify-content-lg-between">
+        <nav id="navbar" class="navbar order-last order-lg-0">
+          <ul>
+            <li>
+              <a class="nav-link" href="https://home.cropsfarmer.online/" target="_blank"><img class="nav-logo" id="" alt="" src="assets/img/cropslogo.png">Farms</a>
+            </li>
+            <li>
+              <a class="nav-link" href="" target="_blank"><img class="nav-logo" id="" alt="" src="assets/img/ccs-audit.png">Audited by CyberCrimeShield™</a>
+            </li>
+            <li>
+              <a class="nav-link" href="https://bscscan.com/address/0xf52c3902678aa4af29f58a9582daab792cf5ea5b" target="_blank"><img class="nav-logo" id="logo" alt="" src="assets/img/bscscan-logo-light-circle.svg">Contract</a>
+            </li>
+            <li>
+              <a class="nav-link" href="https://twitter.com/BUSDCropFarmer" target="_blank"><img class="nav-logo" id="twitter" alt="" src="assets/img/twitter.svg">Twitter</a>
+            </li>
+            <li>
+              <a class="nav-link" href="https://t.me/busdcropfarmer" target="_blank"><img class="contract-logo" id="telegram" alt="" src="assets/img/telegram.svg">Telegram</a>
+            </li>
+          </ul>
+          <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+      </div>
+    </header>
+    <section id="hero" class="d-flex align-items-center justify-content-center">
+      <div class="container">
+        <div class="row justify-content-center" style="
+    margin-top: 100px;">
+          <div class="col-xl-6 col-lg-8" style="background: #000000c4;border: 1px solid white!important;border-radius: 14px;/* margin-bottom: 50px; */box-shadow: 0 0 3px #eeb200, 0 0 3px #f3b702, 0 0 3px #f5b801, 0 0 200px #f5b800;">
+            <h1 style="padding-top: 390px;padding-bottom: 20px;color: white;"> The <strong class="avax"> BNB </strong>
+              Crops Yield Farmer </h1>
+            <h2 style="color: white;">Choose your ROI <strong class="avax"> 2%/2.5%/3%/3.5% STATIC</strong> APR Daily.
+            </h2>
+          </div>
+        </div> -->
+    <!-- End Launch section -->
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top ">
+      <div class="container d-flex align-items-center justify-content-lg-between">
+        <nav id="navbar" class="navbar order-last order-lg-0">
+          <ul>
+            <li>
+              <a class="nav-link" href="https://bscscan.com/address/0xa61b2027c67d33b2f2591204e82ad2fc5f0e0868#code"
+                target="_blank"><img class="nav-logo" id="logo" alt=""
+                  src="assets/img/bscscan-logo-light-circle.svg">Contract</a>
+            </li>
+            <li>
+              <a class="nav-link" href="https://t.me/BNBYieldFarmer" target="_blank"><img class="contract-logo"
+                  id="telegram" alt="" src="assets/img/telegram.svg">Telegram</a>
+            </li>
+          </ul>
+          <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+      </div>
+    </header> <!-- End Header -->
+
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="d-flex align-items-center justify-content-center">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-xl-6 col-lg-8">
+            <div id="banner-wrapper">
+              <div id="banner" class="box container">
+              </div>
+            </div>
+            <h1> The <strong class="avax"> BNB </strong> Yield Farmer </h1>
+            <h2>Choose your ROI <strong class="avax"> 2.5%/3%/4% STATIC</strong> APR Daily.
+            </h2>
+          </div>
+        </div>
+        <div class="row gy-4 justify-content-center">
+          <div class="col-xl-2 col-md-4 hero-row">
+            <div class="icon-box">
+              <div class="header">
+                <i class="bi-bank"></i>
+                <span>Invested</span>
+              </div>
+              <strong id="total-invested" class="number">0</strong>
+              <div>
+                <strong class="avax">BNB</strong>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-2 col-md-4 hero-row">
+            <div class="icon-box">
+              <div class="header">
+                <i class="bi-bank"></i>
+                <span>Balance</span>
+              </div>
+              <strong id="contract-balance" class="number">0</strong>
+              <div>
+                <strong class="avax">BNB</strong>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-2 col-md-4 hero-row">
+            <div class="icon-box">
+              <div class="header">
+                <i class="bi-wallet2"></i>
+                <span>User Balance</span>
+              </div>
+              <div>
+                <strong id="user-balance" class="number">0</strong>
+              </div>
+              <div>
+                <strong class="avax">BNB</strong>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-2 col-md-4 hero-row">
+            <div class="icon-box">
+              <div class="header">
+                <i class="bi-people"></i>
+                <span>Referrals</span>
+                (<span id="user-total-referrals">0</span>)
+              </div>
+              <div>
+                <strong id="user-referral-total-bonus" class="number">0.00</strong>
+              </div>
+              <div>
+                <strong class="avax">BNB</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section> <!-- End Hero -->
+
+    <main id="main">
+
+      <!-- ======= Plans Section ======= -->
+      <section id="services" class="d-flex services align-items-center justify-content-center">
+        <div class="container">
+          <div class="row gy-4 mt-1">
+            <div class="col-lg-3 col-md-5">
+              <div class="icon-box">
+                <div class="icon">
+                  <img src="assets/img/PLAN1.jpg" alt="" class="img-fluid">
+                </div>
+                <h5>Minimum Deposit: 0.025 <strong class="avax">BNB</strong></h5>
+                <h5>Maximum Deposit: 25 <strong class="avax">BNB</strong></h5>
+                <!-- <h5>active deposits: <span id="active-invest1">0</span> <strong class="avax">BNB</strong></h5>
+              <h5>available: <span id="available1">0</span> <strong class="avax">BNB</strong></h5> -->
+                <div class="webdesigntuts-workshop">
+                  <form action="" method="">
+                    <input type="number" class="form-control" id="eth-to-spend1" name="spend" step="1" value="1">
+                  </form>
+                </div>
+                <div class="main">
+                  <div class="btn" onclick="investInPlan1()" role="button">
+                    <p>Invest</p>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+                <div class="btn" onclick="ReinvestInPlan1()" role="button">
+                  <p>Compound</p>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <p>Next Compound: <span id="user-checkpoint-1"> 00H :00M :00S</span></p>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-5">
+              <div class="icon-box">
+                <div class="icon">
+                  <img src="assets/img/Plan2.jpg" alt="" class="img-fluid">
+                </div>
+                <h5>Minimum Deposit: 0.050 <strong class="avax">BNB</strong></h5>
+                <h5>Maximum Deposit: 50 <strong class="avax">BNB</strong></h5>
+                <!-- <h5>active deposits: <span id="active-invest2">0</span> <strong class="avax">BNB</strong></h5>
+              <h5>available: <span id="available2">0</span> <strong class="avax">BNB</strong></h5> -->
+                <div class="webdesigntuts-workshop">
+                  <form action="" method="">
+                    <input type="number" class="form-control" id="eth-to-spend2" name="spend" step="1" value="1">
+                  </form>
+                </div>
+                <div class="main">
+                  <div class="btn" onclick="investInPlan2()" role="button">
+                    <p>Invest</p>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+                <div class="btn" onclick="ReinvestInPlan2()" role="button">
+                  <p>Compound</p>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <p>Next Compound: <span id="user-checkpoint-2"> 00H :00M :00S</span></p>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-5">
+              <div class="icon-box">
+                <div class="icon">
+                  <img src="assets/img/Plan3.jpg" alt="" class="img-fluid">
+                </div>
+                <h5>Minimum Deposit: 0.2 <strong class="avax">BNB</strong></h5>
+                <h5>Maximum Deposit: 10 <strong class="avax">BNB</strong></h5>
+                <!-- <h5>active deposits: <span id="active-invest3">0</span> <strong class="avax">BNB</strong></h5>
+              <h5>available: <span id="available3">0</span> <strong class="avax">BNB</strong></h5> -->
+                <div class="webdesigntuts-workshop">
+                  <form action="" method="">
+                    <input type="number" class="form-control" id="eth-to-spend3" name="spend" step="1" value="1">
+                  </form>
+                </div>
+                <div class="main">
+                  <div class="btn" onclick="investInPlan3()" role="button">
+                    <p>Invest</p>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+                <div class="btn" onclick="ReinvestInPlan3()" role="button">
+                  <p>Compound</p>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <p>Next Compound: <span id="user-checkpoint-3"> 00H :00M :00S</span></p>
+              </div>
+            </div>
+      </section> <!-- End Services Section -->
+
+      <!-- ======= Dashboard Section ======= -->
+      <section id="dashboard" class="services">
+        <div class="container">
+          <div class="section-title">
+            <div class="stats-container">
+
+              <div class="row gy-4 justify-content: space-evenly">
+                <div class="col-xl-2 col-md-4 hero-row">
+                  <div class="stats-icon-box">
+                    <i class="ri-bank-line ri-1x"></i>
+                    User Deposits
+                    <div id="user-deposits">0</div>
+                    <strong class="avax">BNB</strong>
+                  </div>
+                </div>
+
+                <div class="col-xl-2 col-md-4 hero-row">
+                  <div class="stats-icon-box">
+                    <i class="ri-wallet-2-line ri-1x"></i>
+                    User Withdrawn
+                    <div id="user-total-withdrawn">0</div>
+                    <strong class="avax">BNB</strong>
+                  </div>
+                </div>
+                <div class="col-xl-2 col-md-4 hero-row">
+                  <div class="stats-icon-box">
+                    <i class="ri-wallet-2-line ri-1x"></i>
+                    <span> Available </span>
+                    <div id="user-available">0</div>
+                    <strong class="avax">BNB</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="timer">
+                <i class="bi-hourglass-split"></i>
+                Claim within
+                <span id="user-withdraw-countdown">00H :00M :00S</span>
+              </div>
+              <section id="withdraw">
+                <a href="#" class="btn2" onclick="withdraw()" role="button">
+                  Withdraw Rewards
+                </a>
+              </section>
+              <div class="referral-link">
+                <strong>Earn 5% when someone uses your referral link: </strong><a id="reflink"></a><span
+                  onclick="copyRef()"><i class="ri-file-copy-line"></i><span id="copied"></span>
+                </span>
+              </div>
+              <div id="user-deposits" style="display:block;">
+
+                <tbody>
+                  <table id="table-deposits" class="table-deposits">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th style="width: 10%">Plan
+                        </th>
+                        <th style="width: 5%">Rate
+                        </th>
+                        <th style="width: 15%">Invested
+                        </th>
+                        <th style="width: 15%">Start
+                        </th>
+                        <th style="width: 15%">Finish
+                        </th>
+                        <th style="width: 15%">Remaining
+                        </th>
+                        <th style="width: 15%">Compound
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="deposit-rows">
+                      <tr class="no-data">
+                        <td colspan="7">No Deposits to Display</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </tbody>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> <!-- End Dashboard Section -->
+    </main> <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+      <div class="container">
+        <div class="copyright">
+          <span> &copy; Copyright <strong class="avax">The PremCrypto Team</strong> All Rights Reserved </span>
+        </div>
+      </div>
+      <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+          class="bi bi-arrow-up-short"></i></a>
+    </footer> <!-- End Footer -->
+
+
+    <!-- launch timer  -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js'></script>
+    <script src="./script.js"></script>
+
+
+  </body>
+
+</html>
