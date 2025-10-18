@@ -465,7 +465,7 @@ function populateDepositTable() {
                 <tr>
                     <td>Plan ${+deposit.plan + 1}</td>
                     <td>${deposit.percent / 10}%</td>
-                    <td>${Number((deposit.amount * 10 ** -18).toFixed(2))} BNB</td>
+                    <td>${Number((deposit.amount * 10 ** -18).toFixed(8))} BNB</td>
                     <td>${dateStart}</td>
                     <td>${dateEnd}</td>
                     <td>${textStr}</td>
