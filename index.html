@@ -296,7 +296,6 @@
         <div class="container">
           <div class="section-title">
             <div class="stats-container">
-
               <div class="row gy-4 justify-content: space-evenly">
                 <div class="col-xl-2 col-md-4 hero-row">
                   <div class="stats-icon-box">
@@ -324,52 +323,59 @@
                   </div>
                 </div>
               </div>
-
-              <div class="timer">
-                <i class="bi-hourglass-split"></i>
-                Claim within
-                <span id="user-withdraw-countdown">00H :00M :00S</span>
-              </div>
+              <br>
               <section id="withdraw">
                 <a href="#" class="btn2" onclick="withdraw()" role="button">
-                  Withdraw Rewards
+                  <i class="bi-hourglass-split"></i>
+                  <span class="btn-text">Claim Rewards in :</span>
+                  <span id="user-withdraw-countdown">00H :00M :00S</span>
+
+                  <!-- These four spans are only for animation -->
+                  <span class="border-anim top"></span>
+                  <span class="border-anim right"></span>
+                  <span class="border-anim bottom"></span>
+                  <span class="border-anim left"></span>
                 </a>
               </section>
               <div class="referral-link">
-                <strong>Earn 5% when someone uses your referral link: </strong><a id="reflink"></a><span
-                  onclick="copyRef()"><strong>Click Here!</strong><span id="copied"></span>
+                <strong>Share & earn 5%: </strong>
+                <span id="reflink" class="ref-text" style="color: rgba(255, 255, 255, 0.6); cursor:pointer;"></span>
+                <span onclick="copyRef()" style="cursor:pointer; margin-left:5px;">
+                  <i class="ri-file-copy-line"></i>
+                  <span id="copied"></span>
                 </span>
-              </div>
-              <div id="user-deposits" style="display:block;">
-
-                <tbody>
-                  <table id="table-deposits" class="table-deposits">
-                    <thead class="thead-dark">
-                      <tr>
-                        <th style="width: 10%">Plan
-                        </th>
-                        <th style="width: 5%">Rate
-                        </th>
-                        <th style="width: 15%">Invested
-                        </th>
-                        <th style="width: 15%">Remaining
-                        </th>
-                        <th style="width: 15%">Compound
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody id="deposit-rows">
-                      <tr class="no-data">
-                        <td colspan="7">No Deposits to Display</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </tbody>
-              </div>
+              </div>  
             </div>
           </div>
         </div>
       </section> <!-- End Dashboard Section -->
+
+      <section id="dashboard" class="services">
+        <div class="container">
+            <div class="stats-container">
+              <h1 style="color: rgba(255, 255, 255, 0.6);text-align:center; margin-bottom: 20px;">Deposit Record</h1>
+              <div id="user-deposits" style="display:block;">
+                <table id="table-deposits" class="table-deposits">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th style="width: 10%">Plan</th>
+                      <th style="width: 5%">Rate</th>
+                      <th style="width: 15%">Invested</th>
+                      <th style="width: 15%">Remaining</th>
+                      <th style="width: 15%">Compound</th>
+                    </tr>
+                  </thead>
+                  <tbody id="deposit-rows">
+                    <tr class="no-data">
+                      <td colspan="7" style="text-align:center;">No Deposits to Display</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+      </section> <!-- End Dashboard Section -->
+
     </main> <!-- End #main -->
 
     <!-- ======= Footer ======= -->
