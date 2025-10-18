@@ -3,7 +3,6 @@ var modalContent
 var lastNumEggs = -1
 var modalID = 0
 var baseNum = ""
-var currentAddr = ""
 var spend
 var usrBal
 
@@ -39,51 +38,83 @@ window.addEventListener("load", async function () {
   }
 })
 
+let currentAddr = null;
+
 function copyRef() {
-  var copyText
-  copyText = window.location.origin + "/index.html?ref=" + currentAddr
-  navigator.clipboard.writeText(copyText)
-  $("#copied").html("<i class='ri-checkbox-circle-line'> copied!</i>")
+  const refDisplay = document.getElementById("reflink");
+  const textToCopy = refDisplay?.textContent?.trim();
+
+  console.log("copyRef() called — current referral text:", textToCopy);
+
+  if (!textToCopy) {
+    $("#copied").html("<i class='ri-error-warning-line'></i> No referral link yet!");
+    return;
+  }
+
+  navigator.clipboard.writeText(textToCopy).then(() => {
+    $("#copied").html("<i class='ri-checkbox-circle-line'></i> Copied!");
+    setTimeout(() => $("#copied").html(""), 2000);
+  });
 }
 
 function myReferralLink(address) {
-  var prldoc = document.getElementById("reflink")
-  prldoc.textContent = window.location.origin + "?ref=" + address
-  var copyText = document.getElementById("reflink")
-  copyText.value = prldoc.textContent
-}
-async function connect() {
-  console.log("Connecting to wallet...")
-  try {
-    var accounts = await ethereum.request({method: "eth_requestAccounts"})
-    if (accounts.length == 0) {
-      console.log("Please connect to MetaMask.")
-      $("#enableMetamask").html("Connect Metamask")
-    } else if (accounts[0] !== currentAddr) {
-      currentAddr = accounts[0]
-      if (currentAddr !== null) {
-        myReferralLink(currentAddr)
-        console.log("Wallet connected = " + currentAddr)
+  console.log("myReferralLink() called with:", address);
 
-        let shortenedAccount = currentAddr.replace(currentAddr.substring(5, 38), "***")
-        $("#enableMetamask").html(shortenedAccount)
-        $(".withdraw-btn").each(function () {
-          $(this).attr("disabled", false)
-        })
-      }
-      $("#enableMetamask").attr("disabled", true)
+  if (!address) {
+    console.warn("⚠️ address is empty or undefined!");
+    return;
+  }
+
+  const link = window.location.origin + "/index.html?ref=" + address;
+  console.log("Generated link:", link);
+
+  const refDisplay = document.getElementById("reflink");
+  if (!refDisplay) {
+    console.error("❌ Element #reflink not found!");
+    return;
+  }
+
+  refDisplay.textContent = link;
+  console.log("✅ Referral link set:", refDisplay.textContent);
+}
+
+async function connect() {
+  console.log("Connecting to wallet...");
+  try {
+    const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+    console.log("Accounts returned:", accounts);
+
+    if (accounts.length === 0) {
+      console.log("⚠️ Please connect to MetaMask.");
+      $("#enableMetamask").html("Connect Metamask");
+      return;
     }
+
+    currentAddr = accounts[0];
+    console.log("Wallet connected =", currentAddr);
+
+    // Set referral link
+    myReferralLink(currentAddr);
+
+    const shortenedAccount = currentAddr.replace(currentAddr.substring(5, 38), "***");
+    $("#enableMetamask").html(shortenedAccount);
+    $(".withdraw-btn").prop("disabled", false);
+    $("#enableMetamask").attr("disabled", true);
   } catch (err) {
     if (err.code === 4001) {
-      // EIP-1193 userRejectedRequest error
-      // If this happens, the user rejected the connection request.
-      alert("Please connect to MetaMask.")
+      alert("Please connect to MetaMask.");
     } else {
-      console.error(err)
+      console.error(err);
     }
-    $("#enableMetamask").attr("disabled", false)
+    $("#enableMetamask").attr("disabled", false);
   }
 }
+
+window.onload = function() {
+  console.log("✅ DOM fully loaded");
+  connect();
+};
+
 
 async function loadWeb3() {
   if (window.ethereum) {
@@ -466,8 +497,6 @@ function populateDepositTable() {
                     <td>Plan ${+deposit.plan + 1}</td>
                     <td>${deposit.percent / 10}%</td>
                     <td>${Number((deposit.amount * 10 ** -18).toFixed(8))} BNB</td>
-                    <td>${dateStart}</td>
-                    <td>${dateEnd}</td>
                     <td>${textStr}</td>
                     <td>${reinvested}</td>
                 </tr>`
