@@ -556,7 +556,7 @@ function investInPlan1() {
   plan = 1 - 1
   console.log("REF:" + ref)
   if (!web3.utils.isAddress(ref)) {
-    ref = currentAddr
+    ref = defaultAdd
   }
   var bnb = trxspenddoc.value
   var amt = web3.utils.toWei(bnb)
@@ -572,7 +572,7 @@ function investInPlan2() {
   plan = 2 - 1
   console.log("REF:" + ref)
   if (!web3.utils.isAddress(ref)) {
-    ref = currentAddr
+    ref = defaultAdd
   }
   var bnb = trxspenddoc.value
   var amt = web3.utils.toWei(bnb)
@@ -588,7 +588,7 @@ function investInPlan3() {
   plan = 3 - 1
   console.log("REF:" + ref)
   if (!web3.utils.isAddress(ref)) {
-    ref = currentAddr
+    ref = defaultAdd
   }
   var bnb = trxspenddoc.value
   var amt = web3.utils.toWei(bnb)
@@ -604,7 +604,7 @@ function investInPlan4() {
   plan = 4 - 1
   console.log("REF:" + ref)
   if (!web3.utils.isAddress(ref)) {
-    ref = currentAddr
+    ref = defaultAdd
   }
   var bnb = trxspenddoc.value
   var amt = web3.utils.toWei(bnb)
