@@ -996,7 +996,7 @@ section {
   color: rgba(255, 255, 255, 0.8);
 }
 section #withdraw {
-  padding-bottom: 30px !important;
+  padding-bottom: 1px !important;
   overflow: hidden;
 }
 /*--------------------------------------------------------------
@@ -1225,7 +1225,7 @@ section #withdraw {
 }
 .table-deposits {
   border-radius: 10px;
-  color: #fff;
+  color: rgba(255, 255, 255, 0.6);
   margin: auto;
   width: 100%;
   border-collapse: collapse;
@@ -1588,6 +1588,7 @@ section #withdraw {
   margin: auto;
   display: contents;
 }
+
 /*--------------------------------------------------------------
   # Youtube Video's
   --------------------------------------------------------------*/
@@ -1920,63 +1921,49 @@ iframe {
 --------------------------------------------------------------*/
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap");
 
-#withdraw a:hover {
-  background: #ecb100;
-  color: #050801;
-  box-shadow: 0 0 5px #eeb200, 0 0 5px #f3b702, 0 0 5px #f5b801,
-    0 0 200px #f5b800;
-  -webkit-box-reflect: below 1px linear-gradient(transparent, #0005);
-}
-#withdraw .btn2 {
-  color: #000000;
+#withdraw {
   text-align: center;
+}
+
+/* Keep your existing .btn2 style, just tweak */
+#withdraw .btn2 {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: #000;
   font-weight: bold;
   border-radius: 10px;
   height: 50px;
-  padding: 10px;
-  white-space: nowrap;
-  font-size: 19px;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 18px;
   background-color: #ffc107;
   box-shadow: 0px 0px 5px 0px;
   border: 1px solid black;
-  display: inline-flex;
-  width: -webkit-fill-available;
-  position: inherit;
-  width: fit-content;
+  cursor: pointer;
+  overflow: hidden; /* ensures border animations stay inside */
 }
 
-@media (min-width: 260) {
-  .withdraw .btn2 {
-    color: #000;
-    text-align: center;
-    font-weight: bold;
-    border-radius: 10px;
-    height: 50px;
-    padding: 10px;
-    white-space: nowrap;
-    font-size: 13px;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    background-color: #ffc107;
-    box-shadow: 0px 0px 5px 0px;
-    border: 1px solid #000;
-    display: inline-grid;
-    position: inherit;
-    width: fit-content;
-  }
+.btn-text {
+  position: relative;
+  z-index: 2; /* keep text above animated borders */
 }
 
-#withdraw a:nth-child(1) {
+#user-withdraw-countdown {
+  font-weight: bold;
+  position: relative;
+  z-index: 2;
 }
-#withdraw a:nth-child(2) {
-}
-#withdraw a span {
+
+/* Animation borders only apply to spans with class .border-anim */
+#withdraw a .border-anim {
   position: absolute;
   display: block;
 }
-#withdraw a span:nth-child(1) {
+
+/* Keep your animated border rules, but target .border-anim classes */
+#withdraw a .border-anim.top {
   top: 0;
   left: 0;
   width: 100%;
@@ -1984,16 +1971,8 @@ iframe {
   background: linear-gradient(90deg, transparent, #f7b900);
   animation: animate1 1s linear infinite;
 }
-@keyframes animate1 {
-  0% {
-    left: -100%;
-  }
-  50%,
-  100% {
-    left: 100%;
-  }
-}
-#withdraw a span:nth-child(2) {
+
+#withdraw a .border-anim.right {
   top: -100%;
   right: 0;
   width: 2px;
@@ -2002,16 +1981,8 @@ iframe {
   animation: animate2 1s linear infinite;
   animation-delay: 0.25s;
 }
-@keyframes animate2 {
-  0% {
-    top: -100%;
-  }
-  50%,
-  100% {
-    top: 100%;
-  }
-}
-#withdraw a span:nth-child(3) {
+
+#withdraw a .border-anim.bottom {
   bottom: 0;
   right: 0;
   width: 100%;
@@ -2020,17 +1991,8 @@ iframe {
   animation: animate3 1s linear infinite;
   animation-delay: 0.5s;
 }
-@keyframes animate3 {
-  0% {
-    right: -100%;
-  }
-  50%,
-  100% {
-    right: 100%;
-  }
-}
 
-#withdraw a span:nth-child(4) {
+#withdraw a .border-anim.left {
   bottom: -100%;
   left: 0;
   width: 2px;
@@ -2039,6 +2001,7 @@ iframe {
   animation: animate4 1s linear infinite;
   animation-delay: 0.75s;
 }
+
 
 @keyframes animate4 {
   0% {
