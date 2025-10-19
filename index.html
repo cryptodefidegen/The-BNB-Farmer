@@ -65,9 +65,13 @@
     <!-- ======= Header ======= -->
     <header id="header" class="fixed-top ">
       <div class="container d-flex align-items-center justify-content-lg-between">
+        <div class="logo-text" onclick="window.location.href='index.html'">
+          <img src="assets/img/bnb-bnb-logo.svg" alt="BNB Yield Farmer Logo" class="site-logo" />
+          <span>THE <span class="highlight">BNB</span> YIELD FARMER</span>
+        </div>
+        
         <nav id="navbar" class="navbar order-last order-lg-0">
           <ul>
-            <a class="nav-divider"></a>
             <li>
               <a class="nav-link" href="https://bscscan.com/address/0x0cc5d82a6001e3e67baaeca14a38a188027578ac#code"
                 target="_blank"><img class="nav-logo" id="logo" alt=""
@@ -83,11 +87,20 @@
               <a class="nav-link" href="https://github.com/0xApeiron/audits/blob/master/bnbyieldfarmer/BNBYieldFarmerRev.pdf" target="_blank"><img class="contract-logo"
                   id="Audit Report" alt="" src="assets/img/audits.svg">Audit Report</a>
             </li>
-            <a class="nav-divider"></a>
             
           
           <i class="bi bi-list mobile-nav-toggle"></i>
         </nav>
+        <div class="wallet-container">
+          <button id="walletButton" class="btn btn-warning connect-btn">
+            Connect Wallet
+          </button>
+
+          <!-- 👇 Hidden dropdown for disconnect -->
+          <div id="walletDropdown" class="wallet-dropdown">
+            <button id="disconnectWallet" class="btn btn-sm btn-outline-danger">Disconnect</button>
+          </div>
+        </div>
       </div>
     </header> <!-- End Header -->
 
