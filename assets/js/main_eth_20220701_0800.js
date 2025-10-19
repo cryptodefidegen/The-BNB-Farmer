@@ -6,39 +6,177 @@ var baseNum = ""
 var spend
 var usrBal
 
-window.addEventListener("load", async function () {
-  if (window.ethereum) {
-    window.web3 = new Web3(ethereum)
-    try {
-      await ethereum.enable() // Request access
-      minersContract = await new web3.eth.Contract(minersAbi, minersAddr)
-      //tokenContract = await new web3.eth.Contract(tokenAbi, tokenAddr)
-      let accounts = await web3.eth.getAccounts()
-      currentAddr = accounts[0]
-      setTimeout(function () {
-        controlLoop()
-        controlLoopFaster()
-      }, 1000)
-    } catch (error) {
-      // User denied account access...
-      console.error(error)
-    }
-  }
-  // Legacy dapp browsers...
-  else if (window.web3) {
-    window.web3 = new Web3(web3.currentProvider)
-    minersContract = await new web3.eth.Contract(minersAbi, minersAddr)
-    //tokenContract = await new web3.eth.Contract(tokenAbi, tokenAddr)
-    let accounts = await web3.eth.getAccounts()
-    currentAddr = accounts[0]
-    setTimeout(function () {
-      controlLoop()
-      controlLoopFaster()
-    }, 1000)
-  }
-})
-
 let currentAddr = null;
+let connecting = false;
+
+window.addEventListener("load", async function () {
+  if (typeof window.ethereum !== "undefined") {
+    console.log("🦊 MetaMask detected.");
+
+    window.web3 = new Web3(window.ethereum);
+
+    try {
+      // ✅ Request wallet connection (modern way)
+      const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+      const chainId = await ethereum.request({ method: "eth_chainId" });
+
+      // ✅ Store user address
+      currentAddr = accounts[0];
+      console.log("✅ Connected wallet:", currentAddr);
+      console.log("🌐 Current Chain ID:", chainId);
+
+      // ✅ Initialize contract
+      minersContract = new web3.eth.Contract(minersAbi, minersAddr);
+      // tokenContract = new web3.eth.Contract(tokenAbi, tokenAddr);
+
+      // ✅ Kick off your control loops
+      setTimeout(() => {
+        controlLoop();
+        controlLoopFaster();
+      }, 1000);
+
+      // ✅ Handle account or network changes live
+      ethereum.on("accountsChanged", (accounts) => {
+        if (accounts.length === 0) {
+          console.log("⚠️ Wallet disconnected");
+        } else {
+          currentAddr = accounts[0];
+          console.log("🔄 Account changed:", currentAddr);
+          // You could recall your contract functions here if needed
+        }
+      });
+
+      ethereum.on("chainChanged", (chainId) => {
+        console.log("🔄 Network changed to:", chainId);
+        window.location.reload(); // refresh the DApp to reload data
+      });
+
+    } catch (error) {
+      if (error.code === 4001) {
+        console.warn("❌ User rejected connection request");
+      } else {
+        console.error("❌ MetaMask connection error:", error);
+      }
+    }
+
+  } else if (window.web3) {
+    // ✅ Legacy dApp browsers (very old versions)
+    console.log("🧓 Legacy web3 provider detected.");
+    window.web3 = new Web3(web3.currentProvider);
+    minersContract = new web3.eth.Contract(minersAbi, minersAddr);
+    // tokenContract = new web3.eth.Contract(tokenAbi, tokenAddr);
+    const accounts = await web3.eth.getAccounts();
+    currentAddr = accounts[0];
+    console.log("✅ Connected wallet:", currentAddr);
+
+    setTimeout(() => {
+      controlLoop();
+      controlLoopFaster();
+    }, 1000);
+
+  } else {
+    console.warn("❌ No Ethereum provider detected. Please install MetaMask.");
+    alert("Please install MetaMask to use this DApp.");
+  }
+});
+
+
+async function connect() {
+  if (connecting) {
+    console.log("⚠️ Connection already in progress...");
+    return;
+  }
+
+  if (typeof window.ethereum === "undefined") {
+    alert("MetaMask not detected. Please install it.");
+    return;
+  }
+
+  console.log("🔗 Connecting to wallet...");
+  connecting = true;
+  $("#enableMetamask").attr("disabled", true);
+
+  try {
+    const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+    console.log("Accounts returned:", accounts);
+
+    if (!accounts || accounts.length === 0) {
+      console.log("⚠️ Please connect to MetaMask.");
+      $("#enableMetamask").html("Connect MetaMask");
+      return;
+    }
+
+    currentAddr = accounts[0];
+    console.log("✅ Wallet connected =", currentAddr);
+
+    // Set referral link
+    myReferralLink(currentAddr);
+
+    const shortenedAccount = `${currentAddr.substring(0, 5)}***${currentAddr.substring(currentAddr.length - 4)}`;
+    $("#enableMetamask").html(shortenedAccount);
+    $(".withdraw-btn").prop("disabled", false);
+
+  } catch (err) {
+    console.error("❌ MetaMask connection error:", err);
+    if (err.code === -32002) {
+      alert("A MetaMask connection request is already pending.\nPlease open MetaMask and approve it.");
+    } else if (err.code === 4001) {
+      alert("You rejected the connection request.");
+    }
+  } finally {
+    $("#enableMetamask").attr("disabled", false);
+    connecting = false;
+  }
+}
+
+async function autoConnect() {
+  if (typeof window.ethereum === "undefined") return;
+
+  try {
+    const accounts = await ethereum.request({ method: "eth_accounts" });
+    if (accounts && accounts.length > 0) {
+      currentAddr = accounts[0];
+      console.log("🔁 Auto-connected:", currentAddr);
+
+      myReferralLink(currentAddr);
+
+      const shortenedAccount = `${currentAddr.substring(0, 5)}***${currentAddr.substring(currentAddr.length - 4)}`;
+      $("#enableMetamask").html(shortenedAccount);
+      $(".withdraw-btn").prop("disabled", false);
+    } else {
+      console.log("🕓 No connected account found, waiting for user...");
+      $("#enableMetamask").html("Connect MetaMask");
+    }
+  } catch (error) {
+    console.error("Auto-connect failed:", error);
+  }
+}
+
+window.addEventListener("load", async () => {
+  console.log("✅ DOM fully loaded");
+  await autoConnect();
+  await loadWeb3();
+});
+
+async function loadWeb3() {
+  if (window.ethereum) {
+    window.web3 = new Web3(window.ethereum);
+    $("#enableMetamask").attr("disabled", false);
+
+    // Don't call connect() here — handled by autoConnect
+    setTimeout(() => {
+      controlLoop();
+      controlLoopFaster();
+    }, 1000);
+  } else {
+    $("#enableMetamask").attr("disabled", true);
+    alert("Please install MetaMask.");
+  }
+}
+
+$("#enableMetamask").on("click", connect);
+
+
 
 function copyRef() {
   const refDisplay = document.getElementById("reflink");
@@ -77,64 +215,6 @@ function myReferralLink(address) {
   refDisplay.textContent = link;
   console.log("✅ Referral link set:", refDisplay.textContent);
 }
-
-async function connect() {
-  console.log("Connecting to wallet...");
-  try {
-    const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-    console.log("Accounts returned:", accounts);
-
-    if (accounts.length === 0) {
-      console.log("⚠️ Please connect to MetaMask.");
-      $("#enableMetamask").html("Connect Metamask");
-      return;
-    }
-
-    currentAddr = accounts[0];
-    console.log("Wallet connected =", currentAddr);
-
-    // Set referral link
-    myReferralLink(currentAddr);
-
-    const shortenedAccount = currentAddr.replace(currentAddr.substring(5, 38), "***");
-    $("#enableMetamask").html(shortenedAccount);
-    $(".withdraw-btn").prop("disabled", false);
-    $("#enableMetamask").attr("disabled", true);
-  } catch (err) {
-    if (err.code === 4001) {
-      alert("Please connect to MetaMask.");
-    } else {
-      console.error(err);
-    }
-    $("#enableMetamask").attr("disabled", false);
-  }
-}
-
-window.onload = function() {
-  console.log("✅ DOM fully loaded");
-  connect();
-};
-
-
-async function loadWeb3() {
-  if (window.ethereum) {
-    window.web3 = new Web3(window.ethereum)
-    $("#enableMetamask").attr("disabled", false)
-    if (window.ethereum.selectedAddress !== null) {
-      await connect()
-      setTimeout(function () {
-        controlLoop()
-        controlLoopFaster()
-      }, 1000)
-    }
-  } else {
-    $("#enableMetamask").attr("disabled", true)
-  }
-}
-
-$("#enableMetamask").click(function () {
-  connect()
-})
 
 function controlLoop() {
   refreshAllData()
@@ -331,28 +411,6 @@ function populateUserCheckpointPlan3() {
   if (usercheckpoint3Elem) usercheckpoint3Elem.textContent = textStr
 }
 
-var checkPointPlan4 = new Date()
-var compoundCooldownValue = 0
-function populateUserCheckpointPlan4() {
-  var usercheckpoint4Elem = document.getElementById("user-checkpoint-4")
-
-  UserCheckpointPlan4(function (result) {
-    checkPointPlan4 = new Date(result * 1000)
-  })
-
-  compoundCooldown(function (result) {
-    compoundCooldownValue = result
-  })
-
-  var nextCompoundPlan4 = new Date(
-    checkPointPlan4.getTime() + 1000 * parseInt(compoundCooldownValue)
-  )
-
-  textStr = returnDHMRemaining(nextCompoundPlan4)
-  if (usercheckpoint4Elem) usercheckpoint4Elem.textContent = textStr
-}
-
-// var checkPointPlan4 = new Date();
 var withdrawCooldownValue = 0
 function populateUserWithdrawCountdown() {
   var userwithdrawElem = document.getElementById("user-withdraw-countdown")
@@ -369,10 +427,6 @@ function populateUserWithdrawCountdown() {
     checkPointPlan3 = new Date(result * 1000)
   })
 
-  UserCheckpointPlan4(function (result) {
-    checkPointPlan4 = new Date(result * 1000)
-  })
-
   withdrawCooldown(function (result) {
     withdrawCooldownValue = result
   })
@@ -386,9 +440,6 @@ function populateUserWithdrawCountdown() {
   }
 
   if (checkPointPlan3 > maxCheckpointDate) {
-    maxCheckpointDate = checkPointPlan3
-  }
-  if (checkPointPlan4 > maxCheckpointDate) {
     maxCheckpointDate = checkPointPlan3
   }
   //console.log(maxCheckpointDate);
@@ -540,7 +591,6 @@ function refreshAllData() {
   populateUserCheckpointPlan1()
   populateUserCheckpointPlan2()
   populateUserCheckpointPlan3()
-  populateUserCheckpointPlan4()
 
   populateUserWithdrawCountdown()
   populateDepositTable()
