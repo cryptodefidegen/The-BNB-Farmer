@@ -49,11 +49,27 @@ async function initWeb3Modal() {
   });
 }
 
+function updateWalletButton() {
+  const btn = document.getElementById("walletButton");
+  if (!btn) return;
+
+  if (currentAddr) {
+    const shortAddr = `${currentAddr.substring(0, 6)}...${currentAddr.slice(-4)}`;
+    btn.textContent = shortAddr;
+    btn.classList.remove("btn-warning");
+    btn.classList.add("btn-success");
+  } else {
+    btn.textContent = "Connect Wallet";
+    btn.classList.remove("btn-success");
+    btn.classList.add("btn-warning");
+  }
+}
+
 // ✅ 3. Connect Wallet
 async function connectWallet() {
   if (connecting) return;
   connecting = true;
-  $("#enableMetamask").attr("disabled", true);
+  $("#walletButton").attr("disabled", true);
 
   try {
     provider = await web3Modal.connect();
@@ -66,9 +82,9 @@ async function connectWallet() {
     // Example contract initialization
     minersContract = new web3.eth.Contract(minersAbi, minersAddr);
     myReferralLink(currentAddr);
-
+    updateWalletButton(); // 👈 update header
     const shortAddr = `${currentAddr.substring(0, 5)}***${currentAddr.slice(-4)}`;
-    $("#enableMetamask").html(shortAddr);
+    $("#walletButton").html(shortAddr);
     $(".withdraw-btn").prop("disabled", false);
 
     provider.on("accountsChanged", handleAccountChange);
@@ -86,7 +102,7 @@ async function connectWallet() {
     if (err.code === 4001) alert("You rejected the connection request.");
   } finally {
     connecting = false;
-    $("#enableMetamask").attr("disabled", false);
+    $("#walletButton").attr("disabled", false);
   }
 }
 
@@ -110,6 +126,7 @@ function handleAccountChange(accounts) {
     console.log("🔄 Account changed:", currentAddr);
     myReferralLink(currentAddr);
   }
+  updateWalletButton(); // 👈 update header
 }
 
 function handleChainChange(chainId) {
@@ -117,12 +134,29 @@ function handleChainChange(chainId) {
   window.location.reload();
 }
 
+// ✅ Disconnect function
+async function disconnectWallet() {
+  console.log("🚪 Disconnecting wallet...");
+  if (web3Modal) web3Modal.clearCachedProvider();
+  if (provider && provider.disconnect) {
+    try { await provider.disconnect(); } catch (e) {}
+  }
+  provider = null;
+  web3 = null;
+  currentAddr = null;
+  updateWalletButton();
+  alert("Wallet disconnected.");
+}
+
 function handleDisconnect() {
   console.log("🚪 Wallet disconnected");
   web3Modal.clearCachedProvider();
   currentAddr = null;
-  $("#enableMetamask").html("Connect Wallet");
+  disconnectWallet();
 }
+
+// ✅ Hook to disconnect button
+$("#disconnectWallet").on("click", disconnectWallet);
 
 // ✅ 6. Auto-launch modal on first visit
 window.addEventListener("load", async () => {
@@ -137,7 +171,7 @@ window.addEventListener("load", async () => {
 });
 
 // ✅ 7. Manual connect button
-$("#enableMetamask").on("click", connectWallet);
+$("#walletButton").on("click", connectWallet);
 
 function copyRef() {
   const refDisplay = document.getElementById("reflink");
