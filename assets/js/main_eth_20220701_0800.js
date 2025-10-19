@@ -6,177 +6,138 @@ var baseNum = ""
 var spend
 var usrBal
 
+let web3;
+let provider;
+let web3Modal;
 let currentAddr = null;
 let connecting = false;
 
-window.addEventListener("load", async function () {
-  if (typeof window.ethereum !== "undefined") {
-    console.log("🦊 MetaMask detected.");
-
-    window.web3 = new Web3(window.ethereum);
-
-    try {
-      // ✅ Request wallet connection (modern way)
-      const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-      const chainId = await ethereum.request({ method: "eth_chainId" });
-
-      // ✅ Store user address
-      currentAddr = accounts[0];
-      console.log("✅ Connected wallet:", currentAddr);
-      console.log("🌐 Current Chain ID:", chainId);
-
-      // ✅ Initialize contract
-      minersContract = new web3.eth.Contract(minersAbi, minersAddr);
-      // tokenContract = new web3.eth.Contract(tokenAbi, tokenAddr);
-
-      // ✅ Kick off your control loops
-      setTimeout(() => {
-        controlLoop();
-        controlLoopFaster();
-      }, 1000);
-
-      // ✅ Handle account or network changes live
-      ethereum.on("accountsChanged", (accounts) => {
-        if (accounts.length === 0) {
-          console.log("⚠️ Wallet disconnected");
-        } else {
-          currentAddr = accounts[0];
-          console.log("🔄 Account changed:", currentAddr);
-          // You could recall your contract functions here if needed
-        }
-      });
-
-      ethereum.on("chainChanged", (chainId) => {
-        console.log("🔄 Network changed to:", chainId);
-        window.location.reload(); // refresh the DApp to reload data
-      });
-
-    } catch (error) {
-      if (error.code === 4001) {
-        console.warn("❌ User rejected connection request");
-      } else {
-        console.error("❌ MetaMask connection error:", error);
+// ✅ 1. Supported wallet configurations
+const providerOptions = {
+  walletconnect: {
+    package: window.WalletConnectProvider.default,
+    options: {
+      rpc: {
+        56: "https://bsc-dataseed.binance.org/", // BSC Mainnet
+        97: "https://data-seed-prebsc-1-s1.binance.org:8545/" // BSC Testnet
+      },
+      chainId: 56,
+      qrcodeModalOptions: {
+        mobileLinks: [
+          "metamask",
+          "trust",
+          "tokenpocket",
+          "safepal",
+          "okx",
+          "mathwallet",
+          "bitkeep",
+          "binance",
+          "zerion"
+        ]
       }
     }
-
-  } else if (window.web3) {
-    // ✅ Legacy dApp browsers (very old versions)
-    console.log("🧓 Legacy web3 provider detected.");
-    window.web3 = new Web3(web3.currentProvider);
-    minersContract = new web3.eth.Contract(minersAbi, minersAddr);
-    // tokenContract = new web3.eth.Contract(tokenAbi, tokenAddr);
-    const accounts = await web3.eth.getAccounts();
-    currentAddr = accounts[0];
-    console.log("✅ Connected wallet:", currentAddr);
-
-    setTimeout(() => {
-      controlLoop();
-      controlLoopFaster();
-    }, 1000);
-
-  } else {
-    console.warn("❌ No Ethereum provider detected. Please install MetaMask.");
-    alert("Please install MetaMask to use this DApp.");
   }
-});
+};
 
+// ✅ 2. Initialize Web3Modal
+async function initWeb3Modal() {
+  web3Modal = new window.Web3Modal.default({
+    cacheProvider: true, // Auto-reconnect last used
+    providerOptions,
+    theme: "dark",
+    disableInjectedProvider: false // Allow injected wallets like MetaMask / TokenPocket / SafePal
+  });
+}
 
-async function connect() {
-  if (connecting) {
-    console.log("⚠️ Connection already in progress...");
-    return;
-  }
-
-  if (typeof window.ethereum === "undefined") {
-    alert("MetaMask not detected. Please install it.");
-    return;
-  }
-
-  console.log("🔗 Connecting to wallet...");
+// ✅ 3. Connect Wallet
+async function connectWallet() {
+  if (connecting) return;
   connecting = true;
   $("#enableMetamask").attr("disabled", true);
 
   try {
-    const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-    console.log("Accounts returned:", accounts);
+    provider = await web3Modal.connect();
+    web3 = new Web3(provider);
 
-    if (!accounts || accounts.length === 0) {
-      console.log("⚠️ Please connect to MetaMask.");
-      $("#enableMetamask").html("Connect MetaMask");
-      return;
-    }
-
+    const accounts = await web3.eth.getAccounts();
     currentAddr = accounts[0];
-    console.log("✅ Wallet connected =", currentAddr);
+    console.log("✅ Connected wallet:", currentAddr);
 
-    // Set referral link
+    // Example contract initialization
+    minersContract = new web3.eth.Contract(minersAbi, minersAddr);
     myReferralLink(currentAddr);
 
-    const shortenedAccount = `${currentAddr.substring(0, 5)}***${currentAddr.substring(currentAddr.length - 4)}`;
-    $("#enableMetamask").html(shortenedAccount);
+    const shortAddr = `${currentAddr.substring(0, 5)}***${currentAddr.slice(-4)}`;
+    $("#enableMetamask").html(shortAddr);
     $(".withdraw-btn").prop("disabled", false);
 
-  } catch (err) {
-    console.error("❌ MetaMask connection error:", err);
-    if (err.code === -32002) {
-      alert("A MetaMask connection request is already pending.\nPlease open MetaMask and approve it.");
-    } else if (err.code === 4001) {
-      alert("You rejected the connection request.");
-    }
-  } finally {
-    $("#enableMetamask").attr("disabled", false);
-    connecting = false;
-  }
-}
+    provider.on("accountsChanged", handleAccountChange);
+    provider.on("chainChanged", handleChainChange);
+    provider.on("disconnect", handleDisconnect);
 
-async function autoConnect() {
-  if (typeof window.ethereum === "undefined") return;
-
-  try {
-    const accounts = await ethereum.request({ method: "eth_accounts" });
-    if (accounts && accounts.length > 0) {
-      currentAddr = accounts[0];
-      console.log("🔁 Auto-connected:", currentAddr);
-
-      myReferralLink(currentAddr);
-
-      const shortenedAccount = `${currentAddr.substring(0, 5)}***${currentAddr.substring(currentAddr.length - 4)}`;
-      $("#enableMetamask").html(shortenedAccount);
-      $(".withdraw-btn").prop("disabled", false);
-    } else {
-      console.log("🕓 No connected account found, waiting for user...");
-      $("#enableMetamask").html("Connect MetaMask");
-    }
-  } catch (error) {
-    console.error("Auto-connect failed:", error);
-  }
-}
-
-window.addEventListener("load", async () => {
-  console.log("✅ DOM fully loaded");
-  await autoConnect();
-  await loadWeb3();
-});
-
-async function loadWeb3() {
-  if (window.ethereum) {
-    window.web3 = new Web3(window.ethereum);
-    $("#enableMetamask").attr("disabled", false);
-
-    // Don't call connect() here — handled by autoConnect
+    // Start app loops
     setTimeout(() => {
       controlLoop();
       controlLoopFaster();
     }, 1000);
-  } else {
-    $("#enableMetamask").attr("disabled", true);
-    alert("Please install MetaMask.");
+
+  } catch (err) {
+    console.error("❌ Wallet connection failed:", err);
+    if (err.code === 4001) alert("You rejected the connection request.");
+  } finally {
+    connecting = false;
+    $("#enableMetamask").attr("disabled", false);
   }
 }
 
-$("#enableMetamask").on("click", connect);
+// ✅ 4. Auto Connect (if cached)
+async function autoConnect() {
+  if (web3Modal.cachedProvider) {
+    console.log("🔁 Auto-connecting previous wallet...");
+    await connectWallet();
+  } else {
+    console.log("🕓 Waiting for user wallet connection...");
+  }
+}
 
+// ✅ 5. Handle events
+function handleAccountChange(accounts) {
+  if (accounts.length === 0) {
+    console.log("⚠️ Wallet disconnected");
+    currentAddr = null;
+  } else {
+    currentAddr = accounts[0];
+    console.log("🔄 Account changed:", currentAddr);
+    myReferralLink(currentAddr);
+  }
+}
 
+function handleChainChange(chainId) {
+  console.log("🔄 Chain changed:", chainId);
+  window.location.reload();
+}
+
+function handleDisconnect() {
+  console.log("🚪 Wallet disconnected");
+  web3Modal.clearCachedProvider();
+  currentAddr = null;
+  $("#enableMetamask").html("Connect Wallet");
+}
+
+// ✅ 6. Auto-launch modal on first visit
+window.addEventListener("load", async () => {
+  console.log("✅ DApp loaded");
+  await initWeb3Modal();
+  await autoConnect();
+
+  if (!web3Modal.cachedProvider) {
+    console.log("🚀 Auto-launching wallet connect modal...");
+    await connectWallet();
+  }
+});
+
+// ✅ 7. Manual connect button
+$("#enableMetamask").on("click", connectWallet);
 
 function copyRef() {
   const refDisplay = document.getElementById("reflink");
@@ -648,22 +609,6 @@ function investInPlan3() {
   })
 }
 
-function investInPlan4() {
-  var trxspenddoc = document.getElementById("eth-to-spend4")
-  ref = getQueryVariable("ref")
-  plan = 4 - 1
-  console.log("REF:" + ref)
-  if (!web3.utils.isAddress(ref)) {
-    ref = defaultAdd
-  }
-  var bnb = trxspenddoc.value
-  var amt = web3.utils.toWei(bnb)
-  console.log(amt)
-  invest(ref, plan, amt, function () {
-    displayTransactionMessage()
-  })
-}
-
 // Reinvest Functions on Buttons
 
 function ReinvestInPlan1() {
@@ -684,14 +629,6 @@ function ReinvestInPlan2() {
 
 function ReinvestInPlan3() {
   plan = 3 - 1
-  console.log("Reinvesting in : " + plan + 1)
-  reinvest(plan, function () {
-    displayTransactionMessage()
-  })
-}
-
-function ReinvestInPlan4() {
-  plan = 4 - 1
   console.log("Reinvesting in : " + plan + 1)
   reinvest(plan, function () {
     displayTransactionMessage()
