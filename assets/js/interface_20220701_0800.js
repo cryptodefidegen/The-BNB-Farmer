@@ -286,18 +286,6 @@ function UserCheckpointPlan3(callback) {
     })
 }
 
-function UserCheckpointPlan4(callback) {
-  minersContract.methods
-    .getUserCheckpoint(currentAddr, 3)
-    .call()
-    .then((result) => {
-      callback(result)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-}
-
 function Plan1Info(callback) {
   minersContract.methods
     .getPlanInfo(0)
