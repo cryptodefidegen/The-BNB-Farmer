@@ -221,9 +221,118 @@ body {
   content: "\f62e";
   vertical-align: 0;
 }
+/* --- Project title styling --- */
+.logo-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 16px; /* same as nav text */
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #ffffff;
+  transition: color 0.2s ease;
+  line-height: 1;
+}
+
+.site-logo {
+  height: 20px; /* just slightly taller than font size */
+  width: auto;
+  border-radius: 4px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.95;
+}
+
+.logo-text:hover .site-logo {
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+#header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (min-width: 992px) {
+  .logo-text {
+    margin-right: 30px;
+  }
+}
+
+.logo-text .highlight {
+  color: #f0b90b; /* BNB yellow accent */
+}
+
+.logo-text:hover {
+  color: #f0b90b;
+}
+
+@media (max-width: 768px) {
+  .logo-text {
+    font-size: 1rem;
+  }
+}
 /*--------------------------------------------------------------
 #  Get Started Button 
 --------------------------------------------------------------*/
+.wallet-container {
+  position: relative;
+  display: inline-block;
+}
+
+.connect-btn {
+  background: #f0b90b;
+  border: none;
+  color: #000;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.connect-btn:hover {
+  background: #ffcc00;
+  transform: scale(1.03);
+}
+
+/* Dropdown styles */
+.wallet-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  background: #1f1f1f;
+  border: 1px solid #333;
+  border-radius: 10px;
+  min-width: 160px;
+  z-index: 100;
+  text-align: left;
+  padding: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.wallet-dropdown a,
+.wallet-dropdown button {
+  display: block;
+  width: 100%;
+  color: #fff;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  padding: 6px 8px;
+}
+
+.wallet-dropdown a:hover,
+.wallet-dropdown button:hover {
+  background: #ffcc00;
+}
+
+.wallet-container:hover .wallet-dropdown {
+  display: block;
+}
+
 .connect-btn {
   color: #fff;
   border-radius: 5px;
