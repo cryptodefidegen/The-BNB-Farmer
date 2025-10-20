@@ -753,6 +753,8 @@ body {
 #hero .container {
   position: relative;
   text-align: center;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0 !important;
 }
 
 .hero-logo {
@@ -786,7 +788,8 @@ body {
   color: #000000;
   font-size: 20px;
   font-family: "Poppins", sans-serif;
-  margin-bottom: 200px;
+  margin-top: 0.2rem;   /* reduce gap above text */
+  margin-bottom: 0.6rem; /* reduce gap below subtitle text */
 }
 #hero .icon-box {
   /* total avax invested, reffs, lott. contract box */
@@ -801,6 +804,10 @@ body {
   overflow-wrap: anywhere;
   text-align: center;
   color: white;
+  margin-top: 0.2rem;   /* pull icon boxes closer upward */
+}
+#hero img.responsive-banner {
+  margin-bottom: 0.2rem;
 }
 #hero .icon-box:hover {
   /* total avax invested, reffs, lott. contract box */
