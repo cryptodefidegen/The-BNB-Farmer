@@ -235,7 +235,7 @@ body {
 }
 
 .site-logo {
-  height: 20px; /* just slightly taller than font size */
+  height: 40px; /* just slightly taller than font size */
   width: auto;
   border-radius: 4px;
   transition: transform 0.2s ease, opacity 0.2s ease;
