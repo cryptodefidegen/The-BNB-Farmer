@@ -175,19 +175,43 @@ $("#walletButton").on("click", connectWallet);
 
 function copyRef() {
   const refDisplay = document.getElementById("reflink");
+  const copied = document.getElementById("copied");
   const textToCopy = refDisplay?.textContent?.trim();
 
   console.log("copyRef() called — current referral text:", textToCopy);
 
   if (!textToCopy) {
-    $("#copied").html("<i class='ri-error-warning-line'></i> No referral link yet!");
+    copied.innerHTML = "<i class='ri-error-warning-line'></i> No referral link yet!";
+    copied.style.color = "#ff6666";
     return;
   }
 
-  navigator.clipboard.writeText(textToCopy).then(() => {
-    $("#copied").html("<i class='ri-checkbox-circle-line'></i> Copied!");
-    setTimeout(() => $("#copied").html(""), 2000);
-  });
+  // Modern clipboard API
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(textToCopy)
+      .then(() => {
+        copied.innerHTML = "<i class='ri-checkbox-circle-line'></i> Copied!";
+        copied.style.color = "#ffc107";
+        setTimeout(() => copied.innerHTML = "", 2000);
+      })
+      .catch(() => fallbackCopy(textToCopy, copied));
+  } else {
+    // Fallback for non-HTTPS/local files
+    fallbackCopy(textToCopy, copied);
+  }
+}
+
+function fallbackCopy(text, copied) {
+  const tempInput = document.createElement("textarea");
+  tempInput.value = text;
+  document.body.appendChild(tempInput);
+  tempInput.select();
+  document.execCommand("copy");
+  document.body.removeChild(tempInput);
+
+  copied.innerHTML = "<i class='ri-checkbox-circle-line'></i> Copied!";
+  copied.style.color = "#ffc107";
+  setTimeout(() => copied.innerHTML = "", 2000);
 }
 
 function myReferralLink(address) {
