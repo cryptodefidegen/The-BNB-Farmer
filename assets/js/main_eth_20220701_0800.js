@@ -338,7 +338,7 @@ function returnDHMRemaining(futureDate) {
     var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000) // minutes
     textStr = diffDays + "d " + diffHrs + "h " + diffMins + "m"
   } else {
-    textStr = "Now"
+    textStr = "Od 00h 00m"
   }
   return textStr
 }
