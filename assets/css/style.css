@@ -40,8 +40,6 @@ h5,
 h6 {
   font-family: "Poppins", sans-serif;
 }
-tr {
-}
 /*--------------------------------------------------------------
   # Background Video
   --------------------------------------------------------------*/
@@ -1034,6 +1032,76 @@ body {
   }
 }
 
+/* REFERRAL BOX (MATCHES OTHER CARDS) */
+.referral-box {
+  background: rgba(255, 255, 255, 0.08);  /* same as stat cards */
+  background-color: #000000c4;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin: 30px auto 50px;
+  width: 80%;
+  max-width: 900px;
+  text-align: center;
+  color: #fff;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  
+  backdrop-filter: none !important;
+}
+
+/* TEXT STYLES */
+.referral-box strong {
+  color: #ffc107;
+  font-weight: 600;
+}
+
+.referral-box .ref-text {
+  display: block;
+  margin-top: 0.5rem;
+  word-wrap: break-word;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: "Courier New", monospace;
+  font-size: 1.2rem;
+}
+
+
+
+.referral-box .ref-text2 {
+  display: block;
+  margin-top: 0.5rem;
+  word-wrap: break-word;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: "Courier New", monospace;
+  font-size: 1.2rem;
+}
+
+/* COPY BUTTON ICON */
+.referral-box i {
+  color: #ffc107;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: transform 0.2s ease;
+}
+
+.referral-box i:hover {
+  transform: scale(1.2);
+}
+
+/* RESPONSIVE ADJUSTMENTS */
+@media (max-width: 768px) {
+  .referral-box {
+    width: 90%;
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+}
+
 .overview {
   font-size: 15px;
   color: rgba(255, 255, 255, 0.9);
@@ -1363,10 +1431,10 @@ section #withdraw {
   display: block;
 }
 .img-fluid {
-  /* width: 1024px;
-  height: 516px; */
-  max-width: 100%;
-  margin-right: 5px;
+  border-radius: 7px;         /* Controls how rounded the corners are */
+  overflow: hidden;            /* Ensures content inside doesn't spill out */
+  display: block;              /* Removes unwanted inline spacing */
+  width: 100%;                 /* Keeps responsiveness */
 }
 
 .table-dark {
@@ -1433,10 +1501,6 @@ section #withdraw {
 .mt-1 {
   margin-top: 0.25rem !important;
   justify-content: space-evenly;
-}
-@media (min-width: 1200px) {
-  .col-xl-2 {
-  }
 }
 @media (min-width: 768px) {
   .col-md-4 {
@@ -2072,7 +2136,13 @@ iframe {
 /*--------------------------------------------------------------
 # Withdraw button
 --------------------------------------------------------------*/
-@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap");
+
+html, body, button, a, span, strong, div, p, h1, h2, h3, h4, h5, h6, input, label {
+  font-family: "Roboto Mono", monospace !important;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+}
 
 #withdraw {
   text-align: center;
