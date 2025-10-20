@@ -1227,6 +1227,10 @@ section #withdraw {
   padding-bottom: 1px !important;
   overflow: hidden;
 }
+
+#withdraw .btn-text strong {
+  font-weight: 700 !important; /* ensure it overrides any previous rule */
+}
 /*--------------------------------------------------------------
 # Services
 --------------------------------------------------------------*/
