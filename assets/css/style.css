@@ -305,10 +305,15 @@ body {
   }
 
   .connect-btn {
-    padding: 5px 10px;
-    font-size: 13px;
-    border-radius: 6px;
-  }
+  padding: 4px 10px;       /* smaller padding */
+  font-size: 14px;         /* smaller text */
+  border-radius: 6px;      /* optional: make it slightly rounded */
+}
+
+.wallet-container .btn-sm {
+  padding: 3px 8px;
+  font-size: 13px;
+}
 
   /* Hide any unnecessary nav spacing */
   #navbar {
