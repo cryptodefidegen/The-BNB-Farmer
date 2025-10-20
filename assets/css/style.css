@@ -1046,7 +1046,8 @@ body {
   color: #fff;
   backdrop-filter: blur(8px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  
+  position: relative;
+  z-index: 10; /* bring it above overlapping elements */
   backdrop-filter: none !important;
 }
 
@@ -1087,6 +1088,12 @@ body {
   cursor: pointer;
   margin-left: 8px;
   transition: transform 0.2s ease;
+  position: relative;
+  z-index: 20;
+}
+
+video, canvas, .background-overlay {
+  pointer-events: none; /* prevent background from intercepting clicks */
 }
 
 .referral-box i:hover {
