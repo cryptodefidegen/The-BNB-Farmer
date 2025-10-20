@@ -298,7 +298,7 @@ function populateUserReferralTotalBonus() {
 function populateUserTotalReferrals() {
   var userTotalReferralsElem = document.getElementById("user-total-referrals")
   userTotalReferrals(function (result) {
-    rawStr = Number(result).toFixed(5)
+    rawStr = Number(result)
     if (userTotalReferralsElem) userTotalReferralsElem.textContent = rawStr
   })
 }
