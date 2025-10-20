@@ -183,7 +183,15 @@
     </section> <!-- End Hero -->
 
     <main id="main">
-
+      
+              <div class="referral-box">
+                <strong>Share & earn 5%: </strong>
+                <span id="reflink" class="ref-text" style="color: rgba(255, 255, 255, 0.6); cursor:pointer;"></span>
+                <span onclick="copyRef()" style="cursor:pointer; margin-left:5px;">
+                  <i class="ri-file-copy-line"></i>
+                  <span id="copied"></span>
+                </span>
+              </div> 
       <!-- ======= Plans Section ======= -->
       <section id="services" class="d-flex services align-items-center justify-content-center">
         <div class="container">
@@ -290,7 +298,6 @@
               </div>
             </div>
       </section> <!-- End Services Section -->
-
       <!-- ======= Dashboard Section ======= -->
       <section id="dashboard" class="services">
         <div class="container">
@@ -323,32 +330,70 @@
                   </div>
                 </div>
               </div>
-              <section id="withdraw">
-                <a href="#" class="btn2" onclick="withdraw()" role="button">
-                  <i class="bi-hourglass-split"></i>
-                  <span class="btn-text">Claim Rewards in :</span>
-                  <span id="user-withdraw-countdown">00H :00M :00S</span>
+          <div style="text-align: center;">
 
-                  <!-- These four spans are only for animation -->
-                  <span class="border-anim top"></span>
-                  <span class="border-anim right"></span>
-                  <span class="border-anim bottom"></span>
-                  <span class="border-anim left"></span>
-                </a>
-              </section>
-              <div class="referral-link">
-                <strong>Share & earn 5%: </strong>
-                <span id="reflink" class="ref-text" style="color: rgba(255, 255, 255, 0.6); cursor:pointer;"></span>
-                <span onclick="copyRef()" style="cursor:pointer; margin-left:5px;">
-                  <i class="ri-file-copy-line"></i>
-                  <span id="copied"></span>
-                </span>
-              </div>  
+                <!-- Reward Timer -->
+                <div class="referral-box" 
+                    style="display: inline-flex; 
+                            justify-content: center; 
+                            align-items: center; 
+                            gap: 5px; 
+                            background: transparent; 
+                            border: none; 
+                            box-shadow: none; 
+                            outline: none;
+                            border-radius: 10px; 
+                            padding: 4px 14px; 
+                            font-size: 14px;
+                            margin-bottom: 4px;"> <!-- small gap -->
+                  <strong class="ref-text" style="font-weight: 400;">
+                    Reward stops in :
+                  </strong>
+                  <span id="user-cutoff" class="ref-text">
+                    2d 23h 26m
+                  </span>
+                </div>
+                <!-- Withdraw Button -->
+                <section id="withdraw" style="margin-top: 0;"> <!-- tighten spacing -->
+                  <a href="#" class="btn2" onclick="withdraw()" role="button"
+                    style="display: inline-flex; align-items: center; justify-content: center;
+                            margin-top: 0; margin-bottom: 0; text-decoration: none;">
+                    <span class="btn-text">Withdraw Profit</span>
+
+                    <!-- Animation Borders -->
+                    <span class="border-anim top"></span>
+                    <span class="border-anim right"></span>
+                    <span class="border-anim bottom"></span>
+                    <span class="border-anim left"></span>
+                  </a>
+                </section>
+                <!-- Claim Timer -->
+                <div class="referral-box" 
+                    style="display: inline-flex; 
+                            justify-content: center; 
+                            align-items: center; 
+                            gap: 5px; 
+                            background: transparent; 
+                            border: none; 
+                            box-shadow: none;
+                            outline: none;
+                            border-radius: 10px; 
+                            padding: 4px 14px; 
+                            font-size: 14px;
+                            margin-top: 0;
+                            margin-bottom: 4px;"> <!-- same small gap -->
+                  <strong class="ref-text" style="font-weight: 400;">
+                    Claim Rewards in :
+                  </strong>
+                  <span id="user-withdraw-countdown" class="ref-text">
+                    0d 0h 26m
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </section> <!-- End Dashboard Section -->
-
+      </section> <!-- End Dashboard Section --> 
       <section id="dashboard" class="services">
         <div class="container">
             <div class="stats-container">
