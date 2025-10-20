@@ -536,7 +536,8 @@ function populateDepositTable() {
         var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000) // minutes
         textStr = diffDays + " days"
 
-        const reinvested = deposit.reinvested
+        // ✅ Convert reinvested boolean to Y / N
+        const reinvested = deposit.reinvested ? "Y" : "N";
         const newRow = depositsTableBody.insertRow(depositsTableBody.rows.length)
         newRow.innerHTML = `
                 <tr>
