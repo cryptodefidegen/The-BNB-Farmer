@@ -58,7 +58,7 @@
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    overflow-y: auto; /* ✅ always allow scrolling */
+    overflow-y: auto;
   }
 
   /* Default (Desktop) Background */
@@ -67,33 +67,39 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    background-attachment: scroll; /* ✅ prevent scroll lock on all devices */
+    background-attachment: scroll;
     background-color: #000;
   }
 
-  /* Optional: Enable fixed effect for desktop only */
   @media (min-width: 769px) {
     body {
       background-attachment: fixed;
     }
   }
 
-  /* Mobile Version */
+  /* ✅ Mobile Version Fix */
   @media only screen and (max-width: 768px) {
+    html, body {
+      height: 100%;
+      min-height: 100vh;
+    }
+
     body {
-      background-image: url('assets/img/background-mobile.png');
-      background-size: cover;
-      background-position: center top;
+      background-image: url('./assets/img/background-mobile.png'); /* ✅ safer relative path */
+      background-repeat: no-repeat;
+      background-size: cover; /* ✅ ensures full coverage */
+      background-position: top center;
+      background-attachment: scroll;
+      background-color: #000;
     }
   }
 
-  /* ✅ Ensure the hero section allows scrolling */
+  /* ✅ Ensure content scrolls correctly */
   #hero {
     min-height: 100vh;
     overflow: visible;
   }
 
-  /* ✅ Make sure header doesn’t block scroll/touches */
   header.fixed-top {
     position: fixed;
     top: 0;
@@ -102,16 +108,15 @@
     pointer-events: auto;
   }
 
-  /* ✅ Offset the main content to avoid being hidden behind header */
   main {
     margin-top: 80px;
   }
 
-  /* Just to ensure no accidental overflow lock */
   section, div {
     overflow: visible;
   }
 </style>
+
 
   <body>
 
