@@ -52,13 +52,34 @@
   </head>
 
   <style>
-    body {
-      background-image: url('assets/img/background.PNG');
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-size: cover;
-    }
-  </style>
+      html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+
+      /* Default (Desktop) Background */
+      body {
+        background-image: url('assets/img/background2.png');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center center;
+        background-color: #000;
+      }
+
+      /* Mobile Version */
+      @media only screen and (max-width: 768px) {
+        body {
+          background-image: url('assets/img/background-mobile.png');
+          background-attachment: scroll; /* better performance on mobile */
+          background-size: cover;
+          background-position: center top;
+        }
+      }
+    </style>
 
   <body>
 
