@@ -52,34 +52,66 @@
   </head>
 
   <style>
-      html, body {
-        height: 100%;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        overflow-x: hidden;
-      }
+  html, body {
+    height: auto;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: auto; /* ✅ always allow scrolling */
+  }
 
-      /* Default (Desktop) Background */
-      body {
-        background-image: url('assets/img/background2.png');
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-size: cover;
-        background-position: center center;
-        background-color: #000;
-      }
+  /* Default (Desktop) Background */
+  body {
+    background-image: url('assets/img/background2.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: scroll; /* ✅ prevent scroll lock on all devices */
+    background-color: #000;
+  }
 
-      /* Mobile Version */
-      @media only screen and (max-width: 768px) {
-        body {
-          background-image: url('assets/img/background-mobile.png');
-          background-attachment: scroll; /* better performance on mobile */
-          background-size: cover;
-          background-position: center top;
-        }
-      }
-    </style>
+  /* Optional: Enable fixed effect for desktop only */
+  @media (min-width: 769px) {
+    body {
+      background-attachment: fixed;
+    }
+  }
+
+  /* Mobile Version */
+  @media only screen and (max-width: 768px) {
+    body {
+      background-image: url('assets/img/background-mobile.png');
+      background-size: cover;
+      background-position: center top;
+    }
+  }
+
+  /* ✅ Ensure the hero section allows scrolling */
+  #hero {
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  /* ✅ Make sure header doesn’t block scroll/touches */
+  header.fixed-top {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+    pointer-events: auto;
+  }
+
+  /* ✅ Offset the main content to avoid being hidden behind header */
+  main {
+    margin-top: 80px;
+  }
+
+  /* Just to ensure no accidental overflow lock */
+  section, div {
+    overflow: visible;
+  }
+</style>
 
   <body>
 
